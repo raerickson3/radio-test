@@ -1,0 +1,15 @@
+/workspaces/radio-test/DemoActions/DemoApp/bin/Debug/net10.0/DemoApp
+/workspaces/radio-test/DemoActions/DemoApp/bin/Debug/net10.0/DemoApp.deps.json
+/workspaces/radio-test/DemoActions/DemoApp/bin/Debug/net10.0/DemoApp.runtimeconfig.json
+/workspaces/radio-test/DemoActions/DemoApp/bin/Debug/net10.0/DemoApp.dll
+/workspaces/radio-test/DemoActions/DemoApp/bin/Debug/net10.0/DemoApp.pdb
+/workspaces/radio-test/DemoActions/DemoApp/obj/Debug/net10.0/DemoApp.GeneratedMSBuildEditorConfig.editorconfig
+/workspaces/radio-test/DemoActions/DemoApp/obj/Debug/net10.0/DemoApp.AssemblyInfoInputs.cache
+/workspaces/radio-test/DemoActions/DemoApp/obj/Debug/net10.0/DemoApp.AssemblyInfo.cs
+/workspaces/radio-test/DemoActions/DemoApp/obj/Debug/net10.0/DemoApp.csproj.CoreCompileInputs.cache
+/workspaces/radio-test/DemoActions/DemoApp/obj/Debug/net10.0/DemoApp.sourcelink.json
+/workspaces/radio-test/DemoActions/DemoApp/obj/Debug/net10.0/DemoApp.dll
+/workspaces/radio-test/DemoActions/DemoApp/obj/Debug/net10.0/refint/DemoApp.dll
+/workspaces/radio-test/DemoActions/DemoApp/obj/Debug/net10.0/DemoApp.pdb
+/workspaces/radio-test/DemoActions/DemoApp/obj/Debug/net10.0/DemoApp.genruntimeconfig.cache
+/workspaces/radio-test/DemoActions/DemoApp/obj/Debug/net10.0/ref/DemoApp.dll
