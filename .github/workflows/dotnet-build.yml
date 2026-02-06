@@ -20,7 +20,7 @@ jobs:
           dotnet-version: "8.0.x"
 
       - name: Restore dependencies
-        run: dotnet restore DemoActions/DemoApp/DemoApp.csproj
+        run: dotnet restore ./DemoActions/DemoApp/DemoApp.csproj
 
       - name: Build DemoActions/DemoApp/DemoApp.csproj
         run: dotnet build --configuration Release --no-restore
