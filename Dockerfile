@@ -28,11 +28,6 @@ WORKDIR /app
 ENV ASPNETCORE_URLS=http://+:8080
 EXPOSE 8080
 
-# Run as non-root (good security posture)
-RUN adduser --disabled-password --gecos "" appuser \
-  && chown -R appuser:appuser /app
-USER appuser
-
 COPY --from=build /app/publish .
 
 # If your assembly name differs, update this DLL name.
