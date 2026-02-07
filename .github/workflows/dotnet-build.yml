@@ -1,4 +1,4 @@
-name: Build and Test .NET
+name: Build and Push Docker Image to ACR
 
 on:
   push:
@@ -6,24 +6,67 @@ on:
   pull_request:
     branches: [ "main" ]
 
+
+permissions:
+  contents: read
+  id-token: write   # required for OIDC azure/login
+
+env:
+  ACR_NAME: ${{ vars.ACR_NAME }}
+  ACR_LOGIN_SERVER: ${{ vars.ACR_LOGIN_SERVER }}
+  IMAGE_NAME: ${{ vars.IMAGE_NAME }}
+
 jobs:
-  build:
+  build-and-push:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+      # Optional: useful for multi-arch builds; safe to keep even if not needed
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Azure (OIDC)
+        uses: azure/login@v2
         with:
-          dotnet-version: "8.0.x"
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
 
-      - name: Restore dependencies
-        run: dotnet restore DemoActions/DemoApp/DemoApp.csproj
+      - name: Login to Azure Container Registry
+        run: az acr login --name "$ACR_NAME"
 
-      - name: Build 
-        run: dotnet build DemoActions/DemoApp/DemoApp.csproj --configuration Release --no-restore
+      # Build tags:
+      #  - Always tag with the commit SHA
+      #  - Tag 'latest' only on main branch pushes (not PRs)
+      - name: Compute image tags
+        id: tags
+        run: |
+          echo "SHA_TAG=${ACR_LOGIN_SERVER}/${IMAGE_NAME}:${GITHUB_SHA}" >> $GITHUB_OUTPUT
 
-      - name: Run tests
-        run: dotnet test DemoActions/DemoApp/DemoApp.csproj --no-build --verbosity normal
+          if [ "${GITHUB_EVENT_NAME}" = "push" ] && [ "${GITHUB_REF}" = "refs/heads/main" ]; then
+            echo "LATEST_TAG=${ACR_LOGIN_SERVER}/${IMAGE_NAME}:latest" >> $GITHUB_OUTPUT
+            echo "PUSH_LATEST=true" >> $GITHUB_OUTPUT
+          else
+            echo "PUSH_LATEST=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Build image (SHA)
+        run: |
+          docker build \
+            -t "${{ steps.tags.outputs.SHA_TAG }}" \
+            .
+
+      - name: Push image (SHA)
+        run: docker push "${{ steps.tags.outputs.SHA_TAG }}"
+
+      - name: Tag + Push latest (main only)
+        if: steps.tags.outputs.PUSH_LATEST == 'true'
+        run: |
+          docker tag "${{ steps.tags.outputs.SHA_TAG }}" "${{ steps.tags.outputs.LATEST_TAG }}"
+          docker push "${{ steps.tags.outputs.LATEST_TAG }}"
