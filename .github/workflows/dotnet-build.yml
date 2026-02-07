@@ -1,29 +1,14 @@
-name: Build and Test .NET
+- name: Build image
+  run: docker build -t ${{ env.ACR_LOGIN_SERVER }}/myapp:${{ github.sha }} .
 
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+- name: Push image
+  run: |
+    az acr login --name ${{ env.ACR_NAME }}
+    docker push ${{ env.ACR_LOGIN_SERVER }}/myapp:${{ github.sha }}
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: "8.0.x"
-
-      - name: Restore dependencies
-        run: dotnet restore DemoActions/DemoApp/DemoApp.csproj
-
-      - name: Build 
-        run: dotnet build DemoActions/DemoApp/DemoApp.csproj --configuration Release --no-restore
-
-      - name: Run tests
-        run: dotnet test DemoActions/DemoApp/DemoApp.csproj --no-build --verbosity normal
+- name: Deploy to Container Apps
+  run: |
+    az containerapp update \
+      --name myapp \
+      --resource-group my-rg \
+      --image ${{ env.ACR_LOGIN_SERVER }}/myapp:${{ github.sha }}
