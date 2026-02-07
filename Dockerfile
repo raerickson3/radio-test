@@ -3,7 +3,7 @@
 ############################
 # Build stage
 ############################
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 
 # Copy the csproj first for better layer caching, then restore
@@ -20,7 +20,7 @@ RUN dotnet publish DemoActions/DemoApp/DemoApp.csproj \
 ############################
 # Runtime stage
 ############################
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
 WORKDIR /app
 
 # .NET 8 ASP.NET images commonly listen on 8080 by default; we set it explicitly for clarity. [1](https://mcr.microsoft.com/en-us/product/dotnet/aspnet/about)[2](https://github.com/dotnet/dotnet-docker/blob/main/README.aspnet.md)
