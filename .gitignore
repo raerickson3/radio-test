@@ -1,2 +1,86 @@
-DemoActions/DemoApp/bin/
-DemoActions/DemoApp/obj/
+###############################
+# .NET / C# Build Artifacts
+###############################
+bin/
+obj/
+out/
+**/bin/
+**/obj/
+
+# VS Code, VS IDE, Rider
+.vscode/
+.vs/
+.idea/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+###############################
+# Build & Package Outputs
+###############################
+*.dll
+*.exe
+*.pdb
+*.cache
+*.log
+*.db
+*.db-shm
+*.db-wal
+
+# NuGet packages
+*.nupkg
+packages/
+.nuget/
+
+###############################
+# Docker / Container Artifacts
+###############################
+# Docker build context exclusions (keeps images small)
+**/Dockerfile*
+**/.dockerignore
+docker-compose*.yml
+
+# Local Docker metadata
+.docker/
+
+###############################
+# GitHub / CI Artifacts
+###############################
+# Actions runner files
+.github/workflows/*.tmp
+.github/workflows/*-cache/
+
+# Logs & temp files created during workflow runs
+*.tgz
+*.zip
+*.tar
+*.gz
+
+###############################
+# OS generated files
+###############################
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux
+*~
+
+###############################
+# Other common cleanup
+###############################
+node_modules/
+.env
+.env.*
+*.swp
+*.bak
+*.tmp
