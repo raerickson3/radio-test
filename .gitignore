@@ -39,7 +39,6 @@ packages/
 # Docker / Container Artifacts
 ###############################
 # Docker build context exclusions (keeps images small)
-**/Dockerfile*
 **/.dockerignore
 docker-compose*.yml
 
