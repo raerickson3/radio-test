@@ -1,3 +1,6 @@
+env:
+  ACR_LOGIN_SERVER: ${{ vars.ACR_LOGIN_SERVER }}
+  
 - name: Build image
   run: docker build -t ${{ env.ACR_LOGIN_SERVER }}/myapp:${{ github.sha }} .
 
